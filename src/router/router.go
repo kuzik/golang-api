@@ -2,7 +2,7 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	apiController "gitlab.com/url-builder/go-admin/src/controllers/api"
+	"gitlab.com/url-builder/go-admin/src/controllers/apiv1"
 
 	"github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
@@ -21,10 +21,10 @@ func InitAPI(router *gin.Engine) {
 
 	api := router.Group("/api/v1")
 	{
-		api.GET("/url/", apiController.ListUrl)
-		api.GET("/url/:id", apiController.ViewUrl)
-		api.POST("/url/:id", apiController.UpdateUrl)
-		api.POST("/url/", apiController.CreateUrl)
-		api.DELETE("/url/:id", apiController.DeleteUrl)
+		api.GET("/url/", apiv1.ListUrl)
+		api.GET("/url/:id", apiv1.ViewUrl)
+		api.POST("/url/:id", apiv1.UpdateUrl)
+		api.POST("/url/", apiv1.CreateUrl)
+		api.DELETE("/url/:id", apiv1.DeleteUrl)
 	}
 }

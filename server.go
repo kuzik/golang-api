@@ -11,6 +11,6 @@ func main() {
 	config.Setup()
 
 	r := gin.New()
-	router.InitAPI(r)
+	router.Register(r)
 	r.Run()
 }

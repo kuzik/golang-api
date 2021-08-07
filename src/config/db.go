@@ -1,6 +1,9 @@
 package config
 
-import "os"
+import (
+	"fmt"
+	"os"
+)
 
 type db struct {
 	Type     string
@@ -22,4 +25,17 @@ func setupDb() {
 	Db.Port = os.Getenv("DATABASE_PORT")
 	Db.Name = os.Getenv("DATABASE_NAME")
 	Db.Prefix = os.Getenv("DATABASE_PREFIX")
+}
+
+// AsDsn
+// Helper function for serializing database configuration to DSN string
+func (config db) AsDsn() string {
+	return fmt.Sprintf(
+		"%v:%v@tcp(%v:%v)/%v?charset=utf8mb4&parseTime=True&loc=Local",
+		config.User,
+		config.Password,
+		config.Host,
+		config.Port,
+		config.Name,
+	)
 }

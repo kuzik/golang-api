@@ -15,6 +15,7 @@ func Connect() (*gorm.DB, error) {
 
 	err := db.AutoMigrate(
 		&models.Url{},
+		&models.Auth{},
 	)
 	if err != nil {
 		return nil, err

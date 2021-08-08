@@ -158,6 +158,32 @@ var doc = `{
                     }
                 }
             }
+        },
+        "/auth": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "description": "Auth data",
+                        "name": "url",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.AuthRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -176,26 +202,14 @@ var doc = `{
                 }
             }
         },
-        "gorm.DeletedAt": {
-            "type": "object",
-            "properties": {
-                "time": {
-                    "type": "string"
-                },
-                "valid": {
-                    "description": "Valid is true if Time is not NULL",
-                    "type": "boolean"
-                }
-            }
-        },
         "models.Url": {
             "type": "object",
             "properties": {
-                "createdAt": {
-                    "type": "string"
+                "created_on": {
+                    "type": "integer"
                 },
-                "deletedAt": {
-                    "$ref": "#/definitions/gorm.DeletedAt"
+                "deleted_on": {
+                    "type": "integer"
                 },
                 "destination": {
                     "type": "string"
@@ -206,7 +220,22 @@ var doc = `{
                 "label": {
                     "type": "string"
                 },
-                "updatedAt": {
+                "modified_on": {
+                    "type": "integer"
+                }
+            }
+        },
+        "requests.AuthRequest": {
+            "type": "object",
+            "required": [
+                "password",
+                "username"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
                     "type": "string"
                 }
             }

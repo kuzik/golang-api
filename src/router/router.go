@@ -6,4 +6,5 @@ func Register(router *gin.Engine) {
 	registerStaticRoutes(router)
 	registerAPI(router)
 	registerSwagger(router)
+	registerAuth(router)
 }

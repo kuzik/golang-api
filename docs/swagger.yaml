@@ -9,28 +9,30 @@ definitions:
     - destination
     - label
     type: object
-  gorm.DeletedAt:
-    properties:
-      time:
-        type: string
-      valid:
-        description: Valid is true if Time is not NULL
-        type: boolean
-    type: object
   models.Url:
     properties:
-      createdAt:
-        type: string
-      deletedAt:
-        $ref: '#/definitions/gorm.DeletedAt'
+      created_on:
+        type: integer
+      deleted_on:
+        type: integer
       destination:
         type: string
       id:
         type: integer
       label:
         type: string
-      updatedAt:
+      modified_on:
+        type: integer
+    type: object
+  requests.AuthRequest:
+    properties:
+      password:
         type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
     type: object
 info:
   contact: {}
@@ -122,4 +124,20 @@ paths:
           schema:
             $ref: '#/definitions/apiv1.UrlRequest'
       summary: Update an existing url
+  /auth:
+    post:
+      parameters:
+      - description: Auth data
+        in: body
+        name: url
+        required: true
+        schema:
+          $ref: '#/definitions/requests.AuthRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
 swagger: "2.0"

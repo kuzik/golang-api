@@ -3,10 +3,13 @@ package router
 import (
 	"github.com/gin-gonic/gin"
 	"gitlab.com/url-builder/go-admin/src/controllers/apiv1"
+	"gitlab.com/url-builder/go-admin/src/middleware"
 )
 
 func registerAPI(router *gin.Engine) {
 	api := router.Group("/api/v1")
+	// Add jwt authorisation
+	api.Use(middleware.JWT())
 	{
 		api.GET("/url/", apiv1.ListUrl)
 		api.GET("/url/:id", apiv1.ViewUrl)

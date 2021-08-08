@@ -2,11 +2,10 @@ package models
 
 import (
 	"gitlab.com/url-builder/go-admin/src/requests/apiv1"
-	"gorm.io/gorm"
 )
 
 type Url struct {
-	gorm.Model
+	Model
 	Label       string
 	Destination string
 }

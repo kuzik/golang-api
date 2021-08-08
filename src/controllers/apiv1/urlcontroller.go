@@ -13,6 +13,7 @@ import (
 // @Tag url
 // @Produce  json
 // @Success 200 {object} []models.Url
+// @Security ApiKeyAuth
 // @Router /api/v1/url [get]
 func ListUrl(context *gin.Context) {
 
@@ -26,6 +27,7 @@ func ListUrl(context *gin.Context) {
 // @Produce  json
 // @Param id path int true "Url ID"
 // @Success 200 {object} request.UrlRequest
+// @Security ApiKeyAuth
 // @Router /api/v1/url/{id} [get]
 func ViewUrl(context *gin.Context) {
 	urlId, _ := strconv.Atoi(context.Param("id"))
@@ -39,6 +41,7 @@ func ViewUrl(context *gin.Context) {
 // @Produce  json
 // @Param url body request.UrlRequest true "URL label"
 // @Success 200 {object} request.UrlRequest
+// @Security ApiKeyAuth
 // @Router /api/v1/url/ [post]
 func CreateUrl(context *gin.Context) {
 	var urlInfo request.UrlRequest
@@ -59,6 +62,7 @@ func CreateUrl(context *gin.Context) {
 // @Param id path int true "Url ID"
 // @Param url body request.UrlRequest true "URL label"
 // @Success 200 {object} request.UrlRequest
+// @Security ApiKeyAuth
 // @Router /api/v1/url/{id} [put]
 func UpdateUrl(context *gin.Context) {
 	var urlInfo request.UrlRequest
@@ -77,6 +81,7 @@ func UpdateUrl(context *gin.Context) {
 // @Produce  json
 // @Param id path int true "Url ID"
 // @Success 200 {string} string	"ok"
+// @Security ApiKeyAuth
 // @Router /api/v1/url/{id} [delete]
 func DeleteUrl(context *gin.Context) {
 	repositories.UserRepository.Delete(prepareId(context, "id"))

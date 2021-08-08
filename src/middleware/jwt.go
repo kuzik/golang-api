@@ -14,7 +14,7 @@ func JWT() gin.HandlerFunc {
 		var data interface{}
 
 		code = http.StatusOK
-		token := c.Query("token")
+		token := c.GetHeader("Authorization")
 		if token == "" {
 			code = http.StatusBadRequest
 		} else {
@@ -27,7 +27,7 @@ func JWT() gin.HandlerFunc {
 		if code != http.StatusOK {
 			c.JSON(http.StatusUnauthorized, gin.H{
 				"code": code,
-				"msg":  "Authorisation error",
+				"msg":  "Authorization error",
 				"data": data,
 			})
 

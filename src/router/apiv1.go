@@ -8,7 +8,7 @@ import (
 
 func registerAPI(router *gin.Engine) {
 	api := router.Group("/api/v1")
-	// Add jwt authorisation
+	// Add jwt Authorization
 	api.Use(middleware.JWT())
 	{
 		api.GET("/url/", apiv1.ListUrl)

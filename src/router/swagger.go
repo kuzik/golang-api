@@ -7,12 +7,14 @@ import (
 	_ "gitlab.com/url-builder/go-admin/docs"
 )
 
-// @title Swagger Example API
+// @title URL management API
 // @version 1.0
 // @description This is documentation for redirect engine admin API
-
-// InitAPI @host 127.0.0.1:8080
-// @BasePath /v1
+// @host 127.0.0.1:8080
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization
+// @BasePath /
 func registerSwagger(router *gin.Engine) {
 	swaggerGroup := router.Group("/", gin.BasicAuth(gin.Accounts{
 		"api-admin": "1111",

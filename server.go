@@ -17,8 +17,10 @@ func main() {
 	_, err := repositories.Connect()
 	if err != nil {
 		fmt.Println(err)
+
+	} else {
+		fmt.Println("Database successfully connected")
 	}
-	fmt.Println("Database successfully connected")
 
 	r.Run()
 }

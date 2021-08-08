@@ -4,8 +4,60 @@
         "contact": {}
     },
     "paths": {
-        "/api/v1/articles/{id}": {
+        "/api/v1/url": {
             "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get a single article",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Url"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/url/": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Create new url",
+                "parameters": [
+                    {
+                        "description": "URL label",
+                        "name": "url",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/apiv1.CreateUrlRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/apiv1.CreateUrlRequest"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/url/{id}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -13,12 +65,64 @@
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "ID",
+                        "description": "Bottle ID",
                         "name": "id",
                         "in": "path",
                         "required": true
                     }
                 ]
+            }
+        }
+    },
+    "definitions": {
+        "apiv1.CreateUrlRequest": {
+            "type": "object",
+            "required": [
+                "destination",
+                "label"
+            ],
+            "properties": {
+                "destination": {
+                    "type": "string"
+                },
+                "label": {
+                    "type": "string"
+                }
+            }
+        },
+        "gorm.DeletedAt": {
+            "type": "object",
+            "properties": {
+                "time": {
+                    "type": "string"
+                },
+                "valid": {
+                    "description": "Valid is true if Time is not NULL",
+                    "type": "boolean"
+                }
+            }
+        },
+        "models.Url": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "deletedAt": {
+                    "$ref": "#/definitions/gorm.DeletedAt"
+                },
+                "destination": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
             }
         }
     }

@@ -1,10 +1,77 @@
+definitions:
+  apiv1.CreateUrlRequest:
+    properties:
+      destination:
+        type: string
+      label:
+        type: string
+    required:
+    - destination
+    - label
+    type: object
+  gorm.DeletedAt:
+    properties:
+      time:
+        type: string
+      valid:
+        description: Valid is true if Time is not NULL
+        type: boolean
+    type: object
+  models.Url:
+    properties:
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      destination:
+        type: string
+      id:
+        type: integer
+      label:
+        type: string
+      updatedAt:
+        type: string
+    type: object
 info:
   contact: {}
 paths:
-  /api/v1/articles/{id}:
+  /api/v1/url:
     get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Url'
+            type: array
+      summary: Get a single article
+  /api/v1/url/:
+    post:
+      consumes:
+      - application/json
       parameters:
-      - description: ID
+      - description: URL label
+        in: body
+        name: url
+        required: true
+        schema:
+          $ref: '#/definitions/apiv1.CreateUrlRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/apiv1.CreateUrlRequest'
+      summary: Create new url
+  /api/v1/url/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Bottle ID
         in: path
         name: id
         required: true

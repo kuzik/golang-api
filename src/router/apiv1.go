@@ -23,7 +23,7 @@ func registerAPI(router *gin.Engine) {
 	{
 		api.GET("/url/", apiv1.ListUrl)
 		api.GET("/url/:id", apiv1.ViewUrl)
-		api.POST("/url/:id", apiv1.UpdateUrl)
+		api.PUT("/url/:id", apiv1.UpdateUrl)
 		api.POST("/url/", apiv1.CreateUrl)
 		api.DELETE("/url/:id", apiv1.DeleteUrl)
 	}

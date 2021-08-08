@@ -29,7 +29,7 @@ var doc = `{
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Get a single article",
+                "summary": "Get urls list",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -59,7 +59,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/apiv1.CreateUrlRequest"
+                            "$ref": "#/definitions/apiv1.UrlRequest"
                         }
                     }
                 ],
@@ -67,7 +67,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/apiv1.CreateUrlRequest"
+                            "$ref": "#/definitions/apiv1.UrlRequest"
                         }
                     }
                 }
@@ -81,21 +81,87 @@ var doc = `{
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Get a single article",
+                "summary": "Get a single url",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Bottle ID",
+                        "description": "Url ID",
                         "name": "id",
                         "in": "path",
                         "required": true
                     }
-                ]
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/apiv1.UrlRequest"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Update an existing url",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Url ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "URL label",
+                        "name": "url",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/apiv1.UrlRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/apiv1.UrlRequest"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Delete an existing url",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Url ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
             }
         }
     },
     "definitions": {
-        "apiv1.CreateUrlRequest": {
+        "apiv1.UrlRequest": {
             "type": "object",
             "required": [
                 "destination",

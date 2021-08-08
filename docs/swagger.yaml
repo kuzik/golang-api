@@ -1,5 +1,5 @@
 definitions:
-  apiv1.CreateUrlRequest:
+  apiv1.UrlRequest:
     properties:
       destination:
         type: string
@@ -46,7 +46,7 @@ paths:
             items:
               $ref: '#/definitions/models.Url'
             type: array
-      summary: Get a single article
+      summary: Get urls list
   /api/v1/url/:
     post:
       consumes:
@@ -57,26 +57,69 @@ paths:
         name: url
         required: true
         schema:
-          $ref: '#/definitions/apiv1.CreateUrlRequest'
+          $ref: '#/definitions/apiv1.UrlRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/apiv1.CreateUrlRequest'
+            $ref: '#/definitions/apiv1.UrlRequest'
       summary: Create new url
   /api/v1/url/{id}:
-    get:
-      consumes:
-      - application/json
+    delete:
       parameters:
-      - description: Bottle ID
+      - description: Url ID
         in: path
         name: id
         required: true
         type: integer
       produces:
       - application/json
-      summary: Get a single article
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: Delete an existing url
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Url ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/apiv1.UrlRequest'
+      summary: Get a single url
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Url ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: URL label
+        in: body
+        name: url
+        required: true
+        schema:
+          $ref: '#/definitions/apiv1.UrlRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/apiv1.UrlRequest'
+      summary: Update an existing url
 swagger: "2.0"

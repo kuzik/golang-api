@@ -11,7 +11,7 @@ type Url struct {
 	Destination string
 }
 
-func UrlFromRequest(request apiv1.CreateUrlRequest) Url {
+func UrlFromRequest(request apiv1.UrlRequest) Url {
 	url := Url{
 		Label:       request.Label,
 		Destination: request.Destination,

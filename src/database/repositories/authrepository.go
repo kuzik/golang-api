@@ -11,8 +11,8 @@ var AuthRepository = authRepository{}
 
 // CheckAuth checks if authentication information exists
 func (r authRepository) CheckAuth(username, password string) (bool, error) {
-	var auth models.Auth
-	err := db.Select("id").Where(models.Auth{Username: username, Password: password}).First(&auth).Error
+	var auth models.User
+	err := db.Select("id").Where(models.User{Username: username, Password: password}).First(&auth).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return false, err
 	}

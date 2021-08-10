@@ -5,7 +5,9 @@ import (
 	request "gitlab.com/url-builder/go-admin/src/requests/apiv1"
 )
 
-type urlRepository struct{}
+type urlRepository struct {
+	Repository
+}
 
 var UserRepository = urlRepository{}
 
@@ -27,10 +29,10 @@ func (r urlRepository) Update(urlId int, urlRequest request.UrlRequest) models.U
 	return urlEntity
 }
 
-func (r urlRepository) All() []models.Url {
+func (r urlRepository) All(page, pageSize int) []models.Url {
 	var urls []models.Url
 
-	db.Limit(20).Find(&urls)
+	db.Scopes(r.paginate(page, pageSize)).Find(&urls)
 
 	return urls
 }

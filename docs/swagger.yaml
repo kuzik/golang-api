@@ -10,8 +10,33 @@ definitions:
     - destination
     - label
     type: object
+  models.Campaign:
+    properties:
+      created_on:
+        type: integer
+      deleted_on:
+        type: integer
+      endDate:
+        type: string
+      id:
+        type: integer
+      modified_on:
+        type: integer
+      name:
+        type: string
+      startDate:
+        type: string
+      user:
+        $ref: '#/definitions/models.User'
+      userID:
+        type: integer
+    type: object
   models.Url:
     properties:
+      campaign:
+        $ref: '#/definitions/models.Campaign'
+      campaignID:
+        type: integer
       created_on:
         type: integer
       deleted_on:
@@ -24,6 +49,19 @@ definitions:
         type: string
       modified_on:
         type: integer
+      user:
+        $ref: '#/definitions/models.User'
+      userID:
+        type: integer
+    type: object
+  models.User:
+    properties:
+      id:
+        type: integer
+      password:
+        type: string
+      username:
+        type: string
     type: object
   requests.AuthRequest:
     properties:
@@ -44,6 +82,19 @@ info:
 paths:
   /api/v1/url:
     get:
+      parameters:
+      - default: 1
+        description: Current page
+        in: query
+        name: page
+        required: true
+        type: integer
+      - default: 10
+        description: Page size
+        in: query
+        name: page_size
+        required: true
+        type: integer
       produces:
       - application/json
       responses:

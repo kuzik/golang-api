@@ -12,12 +12,24 @@ import (
 // @Summary Get urls list
 // @Tag url
 // @Produce  json
+// @Param page query int true "Current page" default(1)
+// @Param page_size query int true "Page size" default(10)
 // @Success 200 {object} []models.Url
 // @Security ApiKeyAuth
 // @Router /api/v1/url [get]
 func ListUrl(context *gin.Context) {
 
-	context.JSON(200, repositories.UserRepository.All())
+	page, _ := strconv.Atoi(context.Query("page"))
+	if page == 0 {
+		page = 1
+	}
+
+	pageSize, _ := strconv.Atoi(context.Query("page_size"))
+	if pageSize == 0 {
+		pageSize = 10
+	}
+
+	context.JSON(200, repositories.UserRepository.All(page, pageSize))
 }
 
 // ViewUrl

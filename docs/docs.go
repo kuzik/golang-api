@@ -35,6 +35,24 @@ var doc = `{
                     "application/json"
                 ],
                 "summary": "Get urls list",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Current page",
+                        "name": "page",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Page size",
+                        "name": "page_size",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -227,9 +245,47 @@ var doc = `{
                 }
             }
         },
+        "models.Campaign": {
+            "type": "object",
+            "properties": {
+                "created_on": {
+                    "type": "integer"
+                },
+                "deleted_on": {
+                    "type": "integer"
+                },
+                "endDate": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "modified_on": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "startDate": {
+                    "type": "string"
+                },
+                "user": {
+                    "$ref": "#/definitions/models.User"
+                },
+                "userID": {
+                    "type": "integer"
+                }
+            }
+        },
         "models.Url": {
             "type": "object",
             "properties": {
+                "campaign": {
+                    "$ref": "#/definitions/models.Campaign"
+                },
+                "campaignID": {
+                    "type": "integer"
+                },
                 "created_on": {
                     "type": "integer"
                 },
@@ -247,6 +303,26 @@ var doc = `{
                 },
                 "modified_on": {
                     "type": "integer"
+                },
+                "user": {
+                    "$ref": "#/definitions/models.User"
+                },
+                "userID": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.User": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
                 }
             }
         },

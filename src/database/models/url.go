@@ -7,12 +7,11 @@ import (
 type Url struct {
 	Model
 	UserID      int
-	CampaignID  int
 	Label       string
 	Destination string
 
-	User     User
-	Campaign Campaign
+	User      User
+	Campaigns []Campaign `gorm:"many2many:url_campaigns;"`
 }
 
 func UrlFromRequest(request apiv1.UrlRequest) Url {

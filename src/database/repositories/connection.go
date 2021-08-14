@@ -13,6 +13,13 @@ func Connect() (*gorm.DB, error) {
 	var mysqlErr error
 	db, mysqlErr = gorm.Open(mysql.Open(config.Db.AsDsn()), &gorm.Config{})
 
+	return db, mysqlErr
+}
+
+// Migrate
+// For performance improvements we run migration from dedicated command only
+func Migrate() error {
+
 	err := db.AutoMigrate(
 		&models.Url{},
 		&models.User{},
@@ -20,8 +27,8 @@ func Connect() (*gorm.DB, error) {
 		&models.Campaign{},
 	)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	return db, mysqlErr
+	return nil
 }

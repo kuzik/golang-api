@@ -1,4 +1,4 @@
-package repositories
+package connection
 
 import (
 	"gitlab.com/url-builder/go-admin/src/config"

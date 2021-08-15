@@ -29,7 +29,7 @@ func ListUrl(context *gin.Context) {
 		pageSize = 10
 	}
 
-	context.JSON(200, repositories.UserRepository.All(page, pageSize))
+	context.JSON(200, repositories.UrlRepository.All(page, pageSize))
 }
 
 // ViewUrl
@@ -44,7 +44,7 @@ func ListUrl(context *gin.Context) {
 func ViewUrl(context *gin.Context) {
 	urlId, _ := strconv.Atoi(context.Param("id"))
 
-	context.JSON(200, repositories.UserRepository.Find(urlId))
+	context.JSON(200, repositories.UrlRepository.Find(urlId))
 }
 
 // CreateUrl
@@ -62,7 +62,7 @@ func CreateUrl(context *gin.Context) {
 		return
 	}
 
-	urlEntity := repositories.UserRepository.Create(urlInfo)
+	urlEntity := repositories.UrlRepository.Create(urlInfo)
 
 	context.JSON(http.StatusCreated, urlEntity)
 }
@@ -83,7 +83,7 @@ func UpdateUrl(context *gin.Context) {
 		return
 	}
 
-	urlEntity := repositories.UserRepository.Update(prepareId(context, "id"), urlInfo)
+	urlEntity := repositories.UrlRepository.Update(prepareId(context, "id"), urlInfo)
 
 	context.JSON(http.StatusOK, urlEntity)
 }
@@ -96,7 +96,7 @@ func UpdateUrl(context *gin.Context) {
 // @Security ApiKeyAuth
 // @Router /api/v1/url/{id} [delete]
 func DeleteUrl(context *gin.Context) {
-	repositories.UserRepository.Delete(prepareId(context, "id"))
+	repositories.UrlRepository.Delete(prepareId(context, "id"))
 
 	context.JSON(http.StatusOK, "ok")
 }

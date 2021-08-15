@@ -3,13 +3,13 @@ package main
 import (
 	"fmt"
 	"gitlab.com/url-builder/go-admin/src/config"
-	"gitlab.com/url-builder/go-admin/src/database/repositories"
+	"gitlab.com/url-builder/go-admin/src/database/connection"
 )
 
 func main() {
 	fmt.Println("Migration script start.")
 	config.Setup()
-	_, err := repositories.Connect()
+	_, err := connection.Connect()
 	if err != nil {
 		fmt.Println(err)
 
@@ -17,7 +17,7 @@ func main() {
 		fmt.Println("Database successfully connected")
 	}
 
-	err = repositories.Migrate()
+	err = connection.Migrate()
 	if err != nil {
 		fmt.Println("Migration error")
 		return

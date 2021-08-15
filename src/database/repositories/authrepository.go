@@ -1,18 +1,22 @@
 package repositories
 
 import (
+	"fmt"
 	"gitlab.com/url-builder/go-admin/src/database/models"
 	"gorm.io/gorm"
 )
 
-type authRepository struct{}
+type authRepository struct {
+	Repository
+}
 
-var AuthRepository = authRepository{}
+var AuthRepository authRepository
 
 // CheckAuth checks if authentication information exists
 func (r authRepository) CheckAuth(username, password string) (bool, error) {
 	var auth models.User
-	err := db.Select("id").Where(models.User{Username: username, Password: password}).First(&auth).Error
+	fmt.Println(r.Repository.Connection)
+	err := r.Repository.Connection.Select("id").Where(models.User{Username: username, Password: password}).First(&auth).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return false, err
 	}

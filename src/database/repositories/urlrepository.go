@@ -9,12 +9,12 @@ type urlRepository struct {
 	Repository
 }
 
-var UserRepository = urlRepository{}
+var UrlRepository urlRepository
 
 func (r urlRepository) Create(url request.UrlRequest) models.Url {
 	urlEntity := models.UrlFromRequest(url)
 
-	db.Create(&urlEntity)
+	r.Connection.Create(&urlEntity)
 
 	return urlEntity
 }
@@ -22,9 +22,9 @@ func (r urlRepository) Create(url request.UrlRequest) models.Url {
 func (r urlRepository) Update(urlId int, urlRequest request.UrlRequest) models.Url {
 	var urlEntity models.Url
 
-	db.First(&urlEntity, urlId)
+	r.Connection.First(&urlEntity, urlId)
 
-	db.Model(&urlEntity).Updates(models.Url{Label: urlRequest.Label, Destination: urlRequest.Destination})
+	r.Connection.Model(&urlEntity).Updates(models.Url{Label: urlRequest.Label, Destination: urlRequest.Destination})
 
 	return urlEntity
 }
@@ -32,7 +32,7 @@ func (r urlRepository) Update(urlId int, urlRequest request.UrlRequest) models.U
 func (r urlRepository) All(page, pageSize int) []models.Url {
 	var urls []models.Url
 
-	db.Scopes(r.paginate(page, pageSize)).Find(&urls)
+	r.Connection.Scopes(r.paginate(page, pageSize)).Find(&urls)
 
 	return urls
 }
@@ -40,7 +40,7 @@ func (r urlRepository) All(page, pageSize int) []models.Url {
 func (r urlRepository) Find(urlId int) models.Url {
 	var urlEntity models.Url
 
-	db.First(&urlEntity, urlId)
+	r.Connection.First(&urlEntity, urlId)
 
 	return urlEntity
 }
@@ -48,7 +48,7 @@ func (r urlRepository) Find(urlId int) models.Url {
 func (r urlRepository) Delete(urlId int) bool {
 	var urlEntity models.Url
 
-	db.Delete(&urlEntity, urlId)
+	r.Connection.Delete(&urlEntity, urlId)
 
 	return true
 }

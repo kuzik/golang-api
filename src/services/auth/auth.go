@@ -9,7 +9,7 @@ type Auth struct {
 	Password string
 }
 
-func (a *Auth) Check() (bool, error) {
+func (a *Auth) Check() (int, error) {
 	password := EncodeSha(a.Password)
 	return repositories.AuthRepository.CheckAuth(a.Username, password)
 }

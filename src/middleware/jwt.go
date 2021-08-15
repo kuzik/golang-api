@@ -14,11 +14,14 @@ func JWT() gin.HandlerFunc {
 		var data interface{}
 
 		code = http.StatusOK
+		var claims *auth.Claims
+		var err error = nil
 		token := c.GetHeader("Authorization")
 		if token == "" {
+
 			code = http.StatusBadRequest
 		} else {
-			_, err := auth.ParseToken(token)
+			claims, err = auth.ParseToken(token)
 			if err != nil {
 				code = http.StatusUnauthorized
 			}
@@ -35,6 +38,7 @@ func JWT() gin.HandlerFunc {
 			return
 		}
 
+		c.Set("user_id", claims.UserId)
 		c.Next()
 	}
 }

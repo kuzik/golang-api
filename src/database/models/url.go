@@ -18,6 +18,7 @@ func UrlFromRequest(request apiv1.UrlRequest) Url {
 	url := Url{
 		Label:       request.Label,
 		Destination: request.Destination,
+		UserID:      request.UserId,
 	}
 
 	return url

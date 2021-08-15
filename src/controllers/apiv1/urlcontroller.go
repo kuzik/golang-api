@@ -61,6 +61,7 @@ func CreateUrl(context *gin.Context) {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	urlInfo.UserId = context.MustGet("user_id").(int)
 
 	urlEntity := repositories.UrlRepository.Create(urlInfo)
 
@@ -82,6 +83,7 @@ func UpdateUrl(context *gin.Context) {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	urlInfo.UserId = context.MustGet("user_id").(int)
 
 	urlEntity := repositories.UrlRepository.Update(prepareId(context, "id"), urlInfo)
 

@@ -20,7 +20,6 @@ func main() {
 		fmt.Println(err)
 
 	} else {
-		fmt.Println(db)
 		repositories.RegisterRepositories(db)
 		fmt.Println("Database successfully connected")
 	}

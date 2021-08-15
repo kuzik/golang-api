@@ -1,4 +1,4 @@
-GO_PROJECT_NAME := test
+GO_PROJECT_NAME := Redirect API
 
 go_prep_build:
 	@echo "\n....Preparing installation environment for $(GO_PROJECT_NAME)...."
@@ -32,7 +32,7 @@ restart:
 .PHONY: go_prep_build go_dep_install go_build go_run install run restart reflex
 
 api-doc:
-	swag init -g=src/router/swagger.go #--parseDependency --parseInternal
+	docker-compose exec app /bin/sh -c "swag init -g=src/router/swagger.go #--parseDependency --parseInternal"
 
 migrate:
-	go run ./src/console/migrate.go
+	docker-compose exec app /bin/sh -c "go run ./src/console/migrate.go"

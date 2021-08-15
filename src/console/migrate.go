@@ -7,6 +7,7 @@ import (
 )
 
 func main() {
+	fmt.Println("Migration script start.")
 	config.Setup()
 	_, err := repositories.Connect()
 	if err != nil {
@@ -21,4 +22,5 @@ func main() {
 		fmt.Println("Migration error")
 		return
 	}
+	fmt.Println("Migration script end.")
 }

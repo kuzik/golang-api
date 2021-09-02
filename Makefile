@@ -16,6 +16,9 @@ go_run:
 	@echo "\n....Running $(GO_PROJECT_NAME)...."
 	./bin/server
 
+go_test:
+	go test -g=server.go -race -covermode=atomic -coverprofile=coverage.out
+
 # Project rules
 install:
 	$(MAKE) go_prep_build
@@ -26,6 +29,7 @@ run:
 	reflex --start-service -r '(\.go$$|\.tmpl$$)' make restart
 
 restart:
+	@$(MAKE) go_test
 	@$(MAKE) go_build
 	@$(MAKE) go_run
 
@@ -33,6 +37,9 @@ restart:
 
 api-doc:
 	docker-compose exec app /bin/sh -c "swag init -g=src/router/swagger.go #--parseDependency --parseInternal"
+
+test:
+	docker-compose exec app /bin/sh -c "go test -covermode=count -coverprofile=coverage.out ./src/..."
 
 migrate:
 	docker-compose exec app /bin/sh -c "go run ./src/console/migrate.go"

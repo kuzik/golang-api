@@ -17,7 +17,7 @@ go_run:
 	./bin/server
 
 go_test:
-	go test -g=server.go -race -covermode=atomic -coverprofile=coverage.out
+	go test -covermode=count -coverprofile=coverage.out ./src/...
 
 # Project rules
 install:
@@ -29,7 +29,6 @@ run:
 	reflex --start-service -r '(\.go$$|\.tmpl$$)' make restart
 
 restart:
-	@$(MAKE) go_test
 	@$(MAKE) go_build
 	@$(MAKE) go_run
 

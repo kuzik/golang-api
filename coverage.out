@@ -1,1 +1,10 @@
-mode: atomic
+mode: count
+gitlab.com/url-builder/go-admin/src/services/auth/auth.go:12.37,15.2 2 0
+gitlab.com/url-builder/go-admin/src/services/auth/jwt.go:19.82,37.2 6 0
+gitlab.com/url-builder/go-admin/src/services/auth/jwt.go:40.48,41.104 1 0
+gitlab.com/url-builder/go-admin/src/services/auth/jwt.go:45.2,45.24 1 0
+gitlab.com/url-builder/go-admin/src/services/auth/jwt.go:51.2,51.17 1 0
+gitlab.com/url-builder/go-admin/src/services/auth/jwt.go:41.104,43.3 1 0
+gitlab.com/url-builder/go-admin/src/services/auth/jwt.go:45.24,46.74 1 0
+gitlab.com/url-builder/go-admin/src/services/auth/jwt.go:46.74,48.4 1 0
+gitlab.com/url-builder/go-admin/src/services/auth/sha.go:10.37,15.2 3 1

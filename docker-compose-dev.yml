@@ -17,10 +17,9 @@ services:
     image: 'mysql:8'
     restart: always
     environment:
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${DATABASE_NAME}
+      MYSQL_PASSWORD: ${DATABASE_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-    command: --default-authentication-plugin=mysql_native_password
     ports:
       - '3307:3306'
     expose:

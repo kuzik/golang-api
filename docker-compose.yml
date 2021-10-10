@@ -2,6 +2,7 @@ version: "3"
 services:
   app:
     container_name: red-admin-api
+    image: registry.gitlab.com/url-builder/go-admin/admin-api
     build:
       context: .
       dockerfile: Dockerfile

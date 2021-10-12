@@ -6,9 +6,9 @@ import (
 
 type Url struct {
 	Model
-	UserID      int
-	Label       string
-	Destination string
+	UserID      int    `gorm:"column:user_id"`
+	Label       string `gorm:"column:label"`
+	Destination string `gorm:"column:destination"`
 
 	User      User
 	Campaigns []Campaign `gorm:"many2many:url_campaigns;"`

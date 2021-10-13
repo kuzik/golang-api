@@ -7,3 +7,8 @@ Regenerate documentation:
 ```
 make api-doc
 ```
+
+
+##TODO
+- finish debug configuration
+- write instruction for debugging https://blog.jetbrains.com/go/2020/05/06/debugging-a-go-application-inside-a-docker-container/

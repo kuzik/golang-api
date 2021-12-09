@@ -16,10 +16,9 @@ func JWT() gin.HandlerFunc {
 
 		code = http.StatusOK
 		var claims *auth.Claims
-		var err error = nil
+		var err error
 		token := c.GetHeader("Authorization")
 		if token == "" {
-
 			code = http.StatusBadRequest
 		} else {
 			claims, err = auth.ParseToken(token)

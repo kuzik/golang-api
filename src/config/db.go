@@ -15,16 +15,16 @@ type db struct {
 	Prefix   string
 }
 
-var Db = &db{}
+var DB = &db{}
 
-func setupDb() {
-	Db.Type = os.Getenv("DATABASE_TYPE")
-	Db.User = os.Getenv("DATABASE_USER")
-	Db.Password = os.Getenv("DATABASE_PASSWORD")
-	Db.Host = os.Getenv("DATABASE_HOST")
-	Db.Port = os.Getenv("DATABASE_PORT")
-	Db.Name = os.Getenv("DATABASE_NAME")
-	Db.Prefix = os.Getenv("DATABASE_PREFIX")
+func setupDB() {
+	DB.Type = os.Getenv("DATABASE_TYPE")
+	DB.User = os.Getenv("DATABASE_USER")
+	DB.Password = os.Getenv("DATABASE_PASSWORD")
+	DB.Host = os.Getenv("DATABASE_HOST")
+	DB.Port = os.Getenv("DATABASE_PORT")
+	DB.Name = os.Getenv("DATABASE_NAME")
+	DB.Prefix = os.Getenv("DATABASE_PREFIX")
 }
 
 // AsDsn

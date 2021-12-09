@@ -1,6 +1,8 @@
 package repositories
 
 import (
+	"errors"
+
 	"gorm.io/gorm"
 
 	"gitlab.com/url-builder/go-admin/src/database/models"
@@ -17,7 +19,7 @@ func (r authRepository) CheckAuth(username, password string) (int, error) {
 	var auth models.User
 	err := r.Repository.Connection.Where(models.User{Username: username, Password: password}).First(&auth).Error
 
-	if err != nil && err != gorm.ErrRecordNotFound {
+	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 		return 0, err
 	}
 

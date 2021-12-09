@@ -13,6 +13,6 @@ func Setup() {
 		log.Fatalf("Error loading .env file")
 	}
 
-	setupDb()
+	setupDB()
 	setupAppConfig()
 }

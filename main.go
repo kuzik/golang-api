@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/gin-gonic/gin"
+
 	"gitlab.com/url-builder/go-admin/src/config"
 	"gitlab.com/url-builder/go-admin/src/database/connection"
 	"gitlab.com/url-builder/go-admin/src/database/repositories"
@@ -23,5 +25,7 @@ func main() {
 		fmt.Println("Database successfully connected")
 	}
 
-	r.Run()
+	if err = r.Run(); err != nil {
+		fmt.Println("Exception occurred: " + err.Error())
+	}
 }

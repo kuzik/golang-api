@@ -22,18 +22,18 @@ func GetAuth(context *gin.Context) {
 	}
 
 	authService := authservice.Auth{Username: authForm.Username, Password: authForm.Password}
-	userId, err := authService.Check()
+	userID, err := authService.Check()
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{})
 		return
 	}
 
-	if userId == 0 {
+	if userID == 0 {
 		context.JSON(http.StatusUnauthorized, gin.H{})
 		return
 	}
 
-	token, err := authservice.GenerateToken(authForm.Username, authForm.Password, userId)
+	token, err := authservice.GenerateToken(authForm.Username, authForm.Password, userID)
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{})
 		return

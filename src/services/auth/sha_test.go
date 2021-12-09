@@ -1,8 +1,9 @@
 package auth_test
 
 import (
-	"gitlab.com/url-builder/go-admin/src/services/auth"
 	"testing"
+
+	"gitlab.com/url-builder/go-admin/src/services/auth"
 )
 
 func TestEncodeSha(t *testing.T) {

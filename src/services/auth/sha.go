@@ -4,6 +4,7 @@ import (
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/hex"
+
 	"gitlab.com/url-builder/go-admin/src/config"
 )
 

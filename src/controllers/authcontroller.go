@@ -1,10 +1,12 @@
 package controllers
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
+
 	"gitlab.com/url-builder/go-admin/src/requests"
 	authservice "gitlab.com/url-builder/go-admin/src/services/auth"
-	"net/http"
 )
 
 // GetAuth @Summary Get Auth
@@ -40,5 +42,4 @@ func GetAuth(context *gin.Context) {
 	context.JSON(http.StatusOK, gin.H{
 		"token": token,
 	})
-	return
 }

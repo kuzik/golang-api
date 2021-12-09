@@ -1,10 +1,11 @@
 package connection
 
 import (
-	"gitlab.com/url-builder/go-admin/src/config"
-	"gitlab.com/url-builder/go-admin/src/database/models"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+
+	"gitlab.com/url-builder/go-admin/src/config"
+	"gitlab.com/url-builder/go-admin/src/database/models"
 )
 
 var db *gorm.DB

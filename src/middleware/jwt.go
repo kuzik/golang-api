@@ -1,8 +1,9 @@
 package middleware
 
 import (
-	"gitlab.com/url-builder/go-admin/src/services/auth"
 	"net/http"
+
+	"gitlab.com/url-builder/go-admin/src/services/auth"
 
 	"github.com/gin-gonic/gin"
 )

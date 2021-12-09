@@ -14,10 +14,6 @@ func (r Repository) paginate(page int, pageSize int) func(*gorm.DB) *gorm.DB {
 	}
 }
 
-func (r Repository) connect(connection *gorm.DB) {
-	r.Connection = connection
-}
-
 func RegisterRepositories(connection *gorm.DB) {
 	AuthRepository = authRepository{Repository{Connection: connection}}
 	UrlRepository = urlRepository{Repository{Connection: connection}}

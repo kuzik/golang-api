@@ -1,11 +1,13 @@
 package apiv1
 
 import (
-	"github.com/gin-gonic/gin"
-	"gitlab.com/url-builder/go-admin/src/database/repositories"
-	request "gitlab.com/url-builder/go-admin/src/requests/apiv1"
 	"net/http"
 	"strconv"
+
+	"github.com/gin-gonic/gin"
+
+	"gitlab.com/url-builder/go-admin/src/database/repositories"
+	request "gitlab.com/url-builder/go-admin/src/requests/apiv1"
 )
 
 // ListUrl

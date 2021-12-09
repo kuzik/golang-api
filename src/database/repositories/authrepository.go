@@ -1,8 +1,9 @@
 package repositories
 
 import (
-	"gitlab.com/url-builder/go-admin/src/database/models"
 	"gorm.io/gorm"
+
+	"gitlab.com/url-builder/go-admin/src/database/models"
 )
 
 type authRepository struct {

@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+
 	"gitlab.com/url-builder/go-admin/src/config"
 	"gitlab.com/url-builder/go-admin/src/database/connection"
 )

@@ -8,11 +8,13 @@ import (
 	"gitlab.com/url-builder/go-admin/src/database/models"
 )
 
+type AuthRepository interface {
+	CheckAuth(username, password string) (int, error)
+}
+
 type authRepository struct {
 	Repository
 }
-
-var AuthRepository authRepository
 
 // CheckAuth checks if authentication information exists
 func (r authRepository) CheckAuth(username, password string) (int, error) {

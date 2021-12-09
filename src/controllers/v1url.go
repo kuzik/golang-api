@@ -1,6 +1,7 @@
-package apiv1
+package controllers
 
 import (
+	"gitlab.com/url-builder/go-admin/src/middleware"
 	"net/http"
 	"strconv"
 
@@ -10,7 +11,26 @@ import (
 	request "gitlab.com/url-builder/go-admin/src/requests/apiv1"
 )
 
-// ListUrl
+type urlController struct {
+	urlRepository repositories.URLRepository
+}
+
+func registerAPI(router *gin.Engine, urlRepository repositories.URLRepository) {
+	controller := urlController{urlRepository: urlRepository}
+
+	api := router.Group("/api/v1")
+	// Add jwt Authorization
+	api.Use(middleware.JWT())
+	{
+		api.GET("/url/", controller.ListURL)
+		api.GET("/url/:id", controller.ViewURL)
+		api.PUT("/url/:id", controller.UpdateURL)
+		api.POST("/url/", controller.CreateURL)
+		api.DELETE("/url/:id", controller.DeleteURL)
+	}
+}
+
+// ListURL
 // @Summary Get urls list
 // @Tag url
 // @Produce  json
@@ -19,7 +39,7 @@ import (
 // @Success 200 {object} []models.Url
 // @Security ApiKeyAuth
 // @Router /api/v1/url [get]
-func ListUrl(context *gin.Context) {
+func (u urlController) ListURL(context *gin.Context) {
 
 	page, _ := strconv.Atoi(context.Query("page"))
 	if page == 0 {
@@ -31,83 +51,83 @@ func ListUrl(context *gin.Context) {
 		pageSize = 10
 	}
 
-	context.JSON(200, repositories.UrlRepository.All(page, pageSize))
+	context.JSON(200, u.urlRepository.All(page, pageSize))
 }
 
-// ViewUrl
+// ViewURL
 // @Summary Get a single url
 // @Tag url
 // @Accept json
 // @Produce  json
 // @Param id path int true "Url ID"
-// @Success 200 {object} request.UrlRequest
+// @Success 200 {object} request.URLRequest
 // @Security ApiKeyAuth
 // @Router /api/v1/url/{id} [get]
-func ViewUrl(context *gin.Context) {
-	urlId, _ := strconv.Atoi(context.Param("id"))
+func (u urlController) ViewURL(context *gin.Context) {
+	urlID, _ := strconv.Atoi(context.Param("id"))
 
-	context.JSON(200, repositories.UrlRepository.Find(urlId))
+	context.JSON(200, u.urlRepository.Find(urlID))
 }
 
-// CreateUrl
+// CreateURL
 // @Summary Create new url
 // @Accept  json
 // @Produce  json
-// @Param url body request.UrlRequest true "URL label"
-// @Success 200 {object} request.UrlRequest
+// @Param url body request.URLRequest true "URL label"
+// @Success 200 {object} request.URLRequest
 // @Security ApiKeyAuth
 // @Router /api/v1/url/ [post]
-func CreateUrl(context *gin.Context) {
-	var urlInfo request.UrlRequest
+func (u urlController) CreateURL(context *gin.Context) {
+	var urlInfo request.URLRequest
 	if err := context.ShouldBind(&urlInfo); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	urlInfo.UserId = context.MustGet("user_id").(int)
+	urlInfo.UserID = context.MustGet("user_id").(int)
 
-	urlEntity := repositories.UrlRepository.Create(urlInfo)
+	urlEntity := u.urlRepository.Create(urlInfo)
 
 	context.JSON(http.StatusCreated, urlEntity)
 }
 
-// UpdateUrl
+// UpdateURL
 // @Summary Update an existing url
 // @Accept  json
 // @Produce  json
 // @Param id path int true "Url ID"
-// @Param url body request.UrlRequest true "URL label"
-// @Success 200 {object} request.UrlRequest
+// @Param url body request.URLRequest true "URL label"
+// @Success 200 {object} request.URLRequest
 // @Security ApiKeyAuth
 // @Router /api/v1/url/{id} [put]
-func UpdateUrl(context *gin.Context) {
-	var urlInfo request.UrlRequest
+func (u urlController) UpdateURL(context *gin.Context) {
+	var urlInfo request.URLRequest
 	if err := context.ShouldBind(&urlInfo); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	urlInfo.UserId = context.MustGet("user_id").(int)
+	urlInfo.UserID = context.MustGet("user_id").(int)
 
-	urlEntity := repositories.UrlRepository.Update(prepareId(context, "id"), urlInfo)
+	urlEntity := u.urlRepository.Update(prepareId(context, "id"), urlInfo)
 
 	context.JSON(http.StatusOK, urlEntity)
 }
 
-// DeleteUrl
+// DeleteURL
 // @Summary Delete an existing url
 // @Produce  json
 // @Param id path int true "Url ID"
 // @Success 200 {string} string	"ok"
 // @Security ApiKeyAuth
 // @Router /api/v1/url/{id} [delete]
-func DeleteUrl(context *gin.Context) {
-	repositories.UrlRepository.Delete(prepareId(context, "id"))
+func (u urlController) DeleteURL(context *gin.Context) {
+	u.urlRepository.Delete(prepareId(context, "id"))
 
 	context.JSON(http.StatusOK, "ok")
 }
 
 // Helper method for preparing ids extracted from url
 func prepareId(context *gin.Context, name string) int {
-	urlId, _ := strconv.Atoi(context.Param(name))
+	urlID, _ := strconv.Atoi(context.Param(name))
 
-	return urlId
+	return urlID
 }

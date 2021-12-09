@@ -14,11 +14,11 @@ type Url struct {
 	Campaigns []Campaign `gorm:"many2many:url_campaigns;"`
 }
 
-func UrlFromRequest(request apiv1.UrlRequest) Url {
+func UrlFromRequest(request apiv1.URLRequest) Url {
 	url := Url{
 		Label:       request.Label,
 		Destination: request.Destination,
-		UserID:      request.UserId,
+		UserID:      request.UserID,
 	}
 
 	return url

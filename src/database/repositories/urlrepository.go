@@ -9,9 +9,15 @@ type urlRepository struct {
 	Repository
 }
 
-var UrlRepository urlRepository
+type URLRepository interface {
+	Create(url request.URLRequest) models.Url
+	Update(urlID int, urlRequest request.URLRequest) models.Url
+	All(page, pageSize int) []models.Url
+	Find(urlID int) models.Url
+	Delete(urlID int) bool
+}
 
-func (r urlRepository) Create(url request.UrlRequest) models.Url {
+func (r urlRepository) Create(url request.URLRequest) models.Url {
 	urlEntity := models.UrlFromRequest(url)
 
 	r.Connection.Create(&urlEntity)
@@ -19,10 +25,10 @@ func (r urlRepository) Create(url request.UrlRequest) models.Url {
 	return urlEntity
 }
 
-func (r urlRepository) Update(urlId int, urlRequest request.UrlRequest) models.Url {
+func (r urlRepository) Update(urlID int, urlRequest request.URLRequest) models.Url {
 	var urlEntity models.Url
 
-	r.Connection.First(&urlEntity, urlId)
+	r.Connection.First(&urlEntity, urlID)
 
 	r.Connection.Model(&urlEntity).Updates(models.Url{Label: urlRequest.Label, Destination: urlRequest.Destination})
 
@@ -37,18 +43,18 @@ func (r urlRepository) All(page, pageSize int) []models.Url {
 	return urls
 }
 
-func (r urlRepository) Find(urlId int) models.Url {
+func (r urlRepository) Find(urlID int) models.Url {
 	var urlEntity models.Url
 
-	r.Connection.First(&urlEntity, urlId)
+	r.Connection.First(&urlEntity, urlID)
 
 	return urlEntity
 }
 
-func (r urlRepository) Delete(urlId int) bool {
+func (r urlRepository) Delete(urlID int) bool {
 	var urlEntity models.Url
 
-	r.Connection.Delete(&urlEntity, urlId)
+	r.Connection.Delete(&urlEntity, urlID)
 
 	return true
 }

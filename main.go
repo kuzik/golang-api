@@ -2,13 +2,13 @@ package main
 
 import (
 	"fmt"
+	"gitlab.com/url-builder/go-admin/src/controllers"
 
 	"github.com/gin-gonic/gin"
 
 	"gitlab.com/url-builder/go-admin/src/config"
 	"gitlab.com/url-builder/go-admin/src/database/connection"
 	"gitlab.com/url-builder/go-admin/src/database/repositories"
-	"gitlab.com/url-builder/go-admin/src/router"
 )
 
 func main() {
@@ -16,14 +16,14 @@ func main() {
 	config.Setup()
 
 	r := gin.New()
-	router.Register(r)
 	db, err := connection.Connect()
 	if err != nil {
 		fmt.Println(err)
 	} else {
-		repositories.RegisterRepositories(db)
 		fmt.Println("Database successfully connected")
 	}
+
+	controllers.Register(r, repositories.GetRepositoriesPool(db))
 
 	if err = r.Run(); err != nil {
 		fmt.Println("Exception occurred: " + err.Error())

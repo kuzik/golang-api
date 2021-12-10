@@ -9,16 +9,15 @@ import (
 
 func main() {
 	fmt.Println("Migration script start.")
-	config.Setup()
-	_, err := connection.Connect()
+	configs := config.LoadConfigs()
+	dbConnection, err := connection.Connect(configs.DB)
 	if err != nil {
 		fmt.Println(err)
-
 	} else {
 		fmt.Println("Database successfully connected")
 	}
 
-	err = connection.Migrate()
+	err = connection.Migrate(dbConnection)
 	if err != nil {
 		fmt.Println("Migration error")
 		return

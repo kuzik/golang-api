@@ -1,12 +1,16 @@
-package auth
+package services
 
 import (
+	"crypto/hmac"
+	"crypto/sha256"
+	"encoding/hex"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
 )
 
-var jwtSecret []byte
+type SecurityService struct {
+}
 
 type Claims struct {
 	Username string `json:"username"`
@@ -16,13 +20,13 @@ type Claims struct {
 }
 
 // GenerateToken generate tokens used for auth
-func GenerateToken(username string, password string, userId int) (string, error) {
+func (s SecurityService) GenerateToken(username string, password string, userId int, secret string) (string, error) {
 	nowTime := time.Now()
 	expireTime := nowTime.Add(3 * time.Hour)
 
 	claims := Claims{
-		EncodeSha(username),
-		EncodeSha(password),
+		s.EncodeSha(username, secret),
+		s.EncodeSha(password, secret),
 		userId,
 		jwt.StandardClaims{
 			ExpiresAt: expireTime.Unix(),
@@ -30,6 +34,7 @@ func GenerateToken(username string, password string, userId int) (string, error)
 		},
 	}
 
+	var jwtSecret []byte
 	tokenClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	token, err := tokenClaims.SignedString(jwtSecret)
 
@@ -37,7 +42,8 @@ func GenerateToken(username string, password string, userId int) (string, error)
 }
 
 // ParseToken parsing token
-func ParseToken(token string) (*Claims, error) {
+func (s SecurityService) ParseToken(token string) (*Claims, error) {
+	var jwtSecret []byte
 	tokenClaims, err := jwt.ParseWithClaims(token, &Claims{}, func(token *jwt.Token) (interface{}, error) {
 		return jwtSecret, nil
 	})
@@ -49,4 +55,11 @@ func ParseToken(token string) (*Claims, error) {
 	}
 
 	return nil, err
+}
+
+func (s SecurityService) EncodeSha(value string, secret string) string {
+	m := hmac.New(sha256.New, []byte(secret))
+	m.Write([]byte(value))
+
+	return hex.EncodeToString(m.Sum(nil))
 }

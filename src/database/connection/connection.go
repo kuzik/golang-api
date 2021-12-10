@@ -8,18 +8,15 @@ import (
 	"gitlab.com/url-builder/go-admin/src/database/models"
 )
 
-var db *gorm.DB
-
-func Connect() (*gorm.DB, error) {
-	var mysqlErr error
-	db, mysqlErr = gorm.Open(mysql.Open(config.DB.AsDsn()), &gorm.Config{})
+func Connect(dbConfig config.DB) (*gorm.DB, error) {
+	db, mysqlErr := gorm.Open(mysql.Open(dbConfig.AsDsn()), &gorm.Config{})
 
 	return db, mysqlErr
 }
 
 // Migrate
 // For performance improvements we run migration from dedicated command only
-func Migrate() error {
+func Migrate(db *gorm.DB) error {
 	err := db.AutoMigrate(
 		&models.Url{},
 		&models.User{},

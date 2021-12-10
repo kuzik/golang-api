@@ -1,9 +1,11 @@
 package controllers
 
 import (
-	"gitlab.com/url-builder/go-admin/src/middleware"
 	"net/http"
 	"strconv"
+
+	"gitlab.com/url-builder/go-admin/src/middleware"
+	"gitlab.com/url-builder/go-admin/src/services"
 
 	"github.com/gin-gonic/gin"
 
@@ -15,12 +17,12 @@ type urlController struct {
 	urlRepository repositories.URLRepository
 }
 
-func registerAPI(router *gin.Engine, urlRepository repositories.URLRepository) {
+func registerAPI(router *gin.Engine, urlRepository repositories.URLRepository, securityService services.SecurityService) {
 	controller := urlController{urlRepository: urlRepository}
 
 	api := router.Group("/api/v1")
 	// Add jwt Authorization
-	api.Use(middleware.JWT())
+	api.Use(middleware.JWT(securityService))
 	{
 		api.GET("/url/", controller.ListURL)
 		api.GET("/url/:id", controller.ViewURL)
@@ -40,7 +42,6 @@ func registerAPI(router *gin.Engine, urlRepository repositories.URLRepository) {
 // @Security ApiKeyAuth
 // @Router /api/v1/url [get]
 func (u urlController) ListURL(context *gin.Context) {
-
 	page, _ := strconv.Atoi(context.Query("page"))
 	if page == 0 {
 		page = 1

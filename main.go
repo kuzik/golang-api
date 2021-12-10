@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+
 	"gitlab.com/url-builder/go-admin/src/controllers"
 
 	"github.com/gin-gonic/gin"
@@ -13,17 +14,17 @@ import (
 
 func main() {
 	// Load configs
-	config.Setup()
+	configs := config.LoadConfigs()
 
 	r := gin.New()
-	db, err := connection.Connect()
+	db, err := connection.Connect(configs.DB)
 	if err != nil {
 		fmt.Println(err)
 	} else {
 		fmt.Println("Database successfully connected")
 	}
 
-	controllers.Register(r, repositories.GetRepositoriesPool(db))
+	controllers.Register(r, repositories.GetRepositoriesPool(db), configs)
 
 	if err = r.Run(); err != nil {
 		fmt.Println("Exception occurred: " + err.Error())

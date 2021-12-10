@@ -3,25 +3,25 @@ package middleware
 import (
 	"net/http"
 
-	"gitlab.com/url-builder/go-admin/src/services/auth"
+	"gitlab.com/url-builder/go-admin/src/services"
 
 	"github.com/gin-gonic/gin"
 )
 
 // JWT is jwt middleware
-func JWT() gin.HandlerFunc {
+func JWT(securityService services.SecurityService) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var code int
 		var data interface{}
 
 		code = http.StatusOK
-		var claims *auth.Claims
+		var claims *services.Claims
 		var err error
 		token := c.GetHeader("Authorization")
 		if token == "" {
 			code = http.StatusBadRequest
 		} else {
-			claims, err = auth.ParseToken(token)
+			claims, err = securityService.ParseToken(token)
 			if err != nil {
 				code = http.StatusUnauthorized
 			}

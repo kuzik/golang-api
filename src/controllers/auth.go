@@ -1,21 +1,29 @@
 package controllers
 
 import (
+	"gitlab.com/url-builder/go-admin/src/config"
 	"gitlab.com/url-builder/go-admin/src/database/repositories"
+	"gitlab.com/url-builder/go-admin/src/services"
+
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 
 	"gitlab.com/url-builder/go-admin/src/requests"
-	authservice "gitlab.com/url-builder/go-admin/src/services/auth"
 )
 
 type authController struct {
-	authRepository repositories.AuthRepository
+	authRepository  repositories.AuthRepository
+	securityService services.SecurityService
+	config          config.Config
 }
 
-func registerAuth(router *gin.Engine, authRepository repositories.AuthRepository) {
-	controller := authController{authRepository: authRepository}
+func registerAuth(router *gin.Engine, authRepository repositories.AuthRepository, securityService services.SecurityService, config config.Config) {
+	controller := authController{
+		authRepository:  authRepository,
+		securityService: securityService,
+		config:          config,
+	}
 
 	router.POST("/auth", controller.GetAuth)
 }
@@ -32,7 +40,7 @@ func (a authController) GetAuth(context *gin.Context) {
 		return
 	}
 
-	password := authservice.EncodeSha(authForm.Password)
+	password := a.securityService.EncodeSha(authForm.Password, a.config.App.Secret)
 	userID, err := a.authRepository.CheckAuth(authForm.Username, password)
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{})
@@ -44,7 +52,7 @@ func (a authController) GetAuth(context *gin.Context) {
 		return
 	}
 
-	token, err := authservice.GenerateToken(authForm.Username, authForm.Password, userID)
+	token, err := a.securityService.GenerateToken(authForm.Username, authForm.Password, userID, a.config.App.Secret)
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{})
 		return

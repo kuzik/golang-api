@@ -1,7 +1,8 @@
 package controllers
 
 import (
-	"gitlab.com/url-builder/go-admin/src/config"
+	"time"
+
 	"gitlab.com/url-builder/go-admin/src/database/repositories"
 	"gitlab.com/url-builder/go-admin/src/services"
 
@@ -15,14 +16,12 @@ import (
 type authController struct {
 	authRepository  repositories.AuthRepository
 	securityService services.SecurityService
-	config          config.Config
 }
 
-func registerAuth(router *gin.Engine, authRepository repositories.AuthRepository, securityService services.SecurityService, config config.Config) {
+func registerAuth(router *gin.Engine, authRepository repositories.AuthRepository, securityService services.SecurityService) {
 	controller := authController{
 		authRepository:  authRepository,
 		securityService: securityService,
-		config:          config,
 	}
 
 	router.POST("/auth", controller.GetAuth)
@@ -40,7 +39,7 @@ func (a authController) GetAuth(context *gin.Context) {
 		return
 	}
 
-	password := a.securityService.EncodeSha(authForm.Password, a.config.App.Secret)
+	password := a.securityService.EncodeSha(authForm.Password)
 	userID, err := a.authRepository.CheckAuth(authForm.Username, password)
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{})
@@ -52,7 +51,9 @@ func (a authController) GetAuth(context *gin.Context) {
 		return
 	}
 
-	token, err := a.securityService.GenerateToken(authForm.Username, authForm.Password, userID, a.config.App.Secret)
+	nowTime := time.Now()
+	expireTime := nowTime.Add(3 * time.Hour)
+	token, err := a.securityService.GenerateToken(authForm.Username, userID, expireTime)
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{})
 		return

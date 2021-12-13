@@ -10,23 +10,20 @@ import (
 )
 
 type SecurityService struct {
+	Secret string
 }
 
 type Claims struct {
 	Username string `json:"username"`
-	Password string `json:"password"`
 	UserId   int    `json:"user_id"`
 	jwt.StandardClaims
 }
 
 // GenerateToken generate tokens used for auth
-func (s SecurityService) GenerateToken(username string, password string, userId int, secret string) (string, error) {
-	nowTime := time.Now()
-	expireTime := nowTime.Add(3 * time.Hour)
+func (s SecurityService) GenerateToken(username string, userId int, expireTime time.Time) (string, error) {
 
 	claims := Claims{
-		s.EncodeSha(username, secret),
-		s.EncodeSha(password, secret),
+		username,
 		userId,
 		jwt.StandardClaims{
 			ExpiresAt: expireTime.Unix(),
@@ -57,8 +54,8 @@ func (s SecurityService) ParseToken(token string) (*Claims, error) {
 	return nil, err
 }
 
-func (s SecurityService) EncodeSha(value string, secret string) string {
-	m := hmac.New(sha256.New, []byte(secret))
+func (s SecurityService) EncodeSha(value string) string {
+	m := hmac.New(sha256.New, []byte(s.Secret))
 	m.Write([]byte(value))
 
 	return hex.EncodeToString(m.Sum(nil))

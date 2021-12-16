@@ -10,7 +10,7 @@ import (
 func Register(router *gin.Engine, pool repositories.RepositoryPool, config config.Config) {
 	securityService := services.SecurityService{Secret: config.App.Secret}
 
-	registerStaticRoutes(router)
+	registerStaticRoutes(router, config)
 	registerAPI(router, pool.GetURLRepository(), securityService)
 	registerSwagger(router)
 

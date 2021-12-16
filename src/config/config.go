@@ -14,7 +14,8 @@ type Config struct {
 }
 
 type App struct {
-	Secret string
+	Secret  string
+	RootDir string
 }
 
 type DB struct {
@@ -24,6 +25,7 @@ type DB struct {
 	Host     string
 	Port     string
 	Name     string
+	NameTest string
 	Prefix   string
 }
 
@@ -40,8 +42,20 @@ func (config DB) AsDsn() string {
 	)
 }
 
-func LoadConfigs() Config {
-	err := godotenv.Load(".env")
+// AsDsnNoDb
+// Helper function for serializing database configuration to DSN string
+func (config DB) AsDsnNoDb() string {
+	return fmt.Sprintf(
+		"%v:%v@tcp(%v:%v)/?charset=utf8mb4&parseTime=True&loc=Local",
+		config.User,
+		config.Password,
+		config.Host,
+		config.Port,
+	)
+}
+
+func LoadConfigs(path string) Config {
+	err := godotenv.Load(path)
 
 	if err != nil {
 		log.Fatalf("Error loading .env file")
@@ -58,7 +72,8 @@ func LoadConfigs() Config {
 			Prefix:   os.Getenv("DATABASE_PREFIX"),
 		},
 		App: App{
-			Secret: os.Getenv("APP_SECRET"),
+			Secret:  os.Getenv("APP_SECRET"),
+			RootDir: os.Getenv("ROOT_DIR"),
 		},
 	}
 }

@@ -4,15 +4,16 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"gitlab.com/url-builder/go-admin/src/config"
 )
 
 type staticController struct {
 }
 
-func registerStaticRoutes(router *gin.Engine) {
+func registerStaticRoutes(router *gin.Engine, configs config.Config) {
 	controller := staticController{}
 
-	router.LoadHTMLGlob("templates/*")
+	router.LoadHTMLGlob(configs.App.RootDir + "templates/*")
 	router.GET("/", controller.WelcomePage)
 }
 

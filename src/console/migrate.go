@@ -9,7 +9,7 @@ import (
 
 func main() {
 	fmt.Println("Migration script start.")
-	configs := config.LoadConfigs()
+	configs := config.LoadConfigs(".env")
 	dbConnection, err := connection.Connect(configs.DB)
 	if err != nil {
 		fmt.Println(err)

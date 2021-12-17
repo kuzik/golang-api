@@ -116,7 +116,7 @@ func TestGetUrls(t *testing.T) {
 
 	res := make([]models.Url, 0)
 	expected := []models.Url{
-		models.Url{
+		{
 			Model:       models.Model{ID: 1, CreatedOn: 0, ModifiedOn: 0, DeletedOn: 0},
 			UserID:      1,
 			Label:       "Label",
@@ -124,6 +124,47 @@ func TestGetUrls(t *testing.T) {
 			User:        models.User{ID: 0, Username: "", Password: ""},
 			Campaigns:   []models.Campaign(nil),
 		},
+	}
+
+	err := json.Unmarshal(w.Body.Bytes(), &res)
+	if err != nil {
+		t.Error("Problem with parsing response")
+		t.Error(err)
+	}
+
+	a.Equal(http.MethodGet, req.Method, "HTTP request method error")
+	a.Equal(http.StatusOK, w.Code, "HTTP request status code error")
+	a.Equal(expected, res, "HTTP response does not match")
+}
+
+func TestGetUrl(t *testing.T) {
+	a := assert.New(t)
+
+	dbConnection := before()
+	if dbConnection == nil {
+		t.Error("DB connection failure")
+	}
+
+	r := src.BootStrap("../../.env.test")
+
+	defer after(dbConnection)
+
+	dbConnection.Exec("INSERT INTO urls (user_id, label, destination) VALUES ( 1, 'Label', 'dest')")
+
+	req, _ := http.NewRequest(http.MethodGet, "/api/v1/url/1", nil)
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", adminToken)
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+
+	res := models.Url{}
+	expected := models.Url{
+		Model:       models.Model{ID: 1, CreatedOn: 0, ModifiedOn: 0, DeletedOn: 0},
+		UserID:      1,
+		Label:       "Label",
+		Destination: "dest",
+		User:        models.User{ID: 0, Username: "", Password: ""},
+		Campaigns:   []models.Campaign(nil),
 	}
 
 	err := json.Unmarshal(w.Body.Bytes(), &res)
